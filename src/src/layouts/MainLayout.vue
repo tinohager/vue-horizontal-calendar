@@ -2,9 +2,8 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-
         <q-toolbar-title>
-          Quasar App
+          Vue Horizontal Calendar
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>

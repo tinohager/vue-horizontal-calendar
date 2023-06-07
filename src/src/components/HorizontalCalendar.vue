@@ -4,39 +4,35 @@ import { date } from 'Quasar'
 
 import HorizontalCalendarDay from './HorizontalCalendarDay.vue'
 
-// import { Todo, Meta } from './models'
+interface Props {
+  calendarWeekPrefix: string
+  showCalendarWeek: boolean
+  dayOffset: number
+  dayJumpOffset: number
+  locales: string | undefined
+}
 
-// interface Props {
-//   title: string;
-//   todos?: Todo[];
-//   meta: Meta;
-//   active: boolean;
-// }
-// const props = withDefaults(defineProps<Props>(), {
-//   todos: () => []
-// })
+const props = withDefaults(defineProps<Props>(), {
+  calendarWeekPrefix: 'KW ',
+  showCalendarWeek: false,
+  dayOffset: 7,
+  dayJumpOffset: 1,
+  locales: undefined
+})
 
 const calculationDate = ref(new Date())
-// const days = ref<number>()
-// const dayOffset = ref<number>(7)
-
-// onMounted(async () => {
-//   // today.value = new Date()
-//   // currentMonth.value = today.value.getMonth()
-//   // days.value = date.daysInMonth(calculationDate.value)
-// })
 
 function next () {
-  calculationDate.value = date.addToDate(calculationDate.value, { days: 1 })
+  calculationDate.value = date.addToDate(calculationDate.value, { days: props.dayJumpOffset })
 }
 
 function previous () {
-  calculationDate.value = date.subtractFromDate(calculationDate.value, { days: 1 })
+  calculationDate.value = date.subtractFromDate(calculationDate.value, { days: props.dayJumpOffset })
 }
 
 const days = computed(() => {
-  const startDate = date.subtractFromDate(calculationDate.value, { days: 7, months: 0 })
-  const endDate = date.addToDate(calculationDate.value, { days: 7, months: 0 })
+  const startDate = date.subtractFromDate(calculationDate.value, { days: props.dayOffset })
+  const endDate = date.addToDate(calculationDate.value, { days: props.dayOffset })
 
   const unit = 'days'
   const diff = date.getDateDiff(endDate, startDate, unit)
@@ -50,11 +46,23 @@ const days = computed(() => {
   return temp
 })
 
+const calendarHeight = computed(() => {
+  let height = 80
+  if (props.showCalendarWeek) {
+    height += 20
+  }
+
+  return height
+})
+
 </script>
 
 <template>
-  <div class="horizontal-calendar">
-    <span
+  <div
+    class="horizontal-calendar"
+    :style="`height:${calendarHeight}px`"
+  >
+    <div
       class="button button-previous"
       @click="previous"
     >
@@ -62,18 +70,19 @@ const days = computed(() => {
         name="arrow_back_ios"
         size="md"
       />
-    </span>
+    </div>
     <span
       v-for="day in days"
       :key="`${date.formatDate(day, 'YYYY-MM-DD')}`"
     >
       <horizontal-calendar-day
         :calendar-date="day"
-        :show-calendar-week="true"
-        calendar-week-prefix="KW "
+        :show-calendar-week="showCalendarWeek"
+        :calendar-week-prefix="calendarWeekPrefix"
+        :locales="locales"
       />
     </span>
-    <span
+    <div
       class="button button-next"
       @click="next"
     >
@@ -81,13 +90,14 @@ const days = computed(() => {
         name="arrow_forward_ios"
         size="md"
       />
-    </span>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .horizontal-calendar {
-  height: 100px;
+  display: inline-block;
+  height: 100%;
   position: relative;
   border: 1px solid #dddddd;
 }
