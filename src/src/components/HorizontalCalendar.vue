@@ -5,6 +5,7 @@ import { date } from 'Quasar'
 import HorizontalCalendarDay from './HorizontalCalendarDay.vue'
 
 interface Props {
+  modelValue: Date | undefined
   calendarWeekPrefix: string
   showCalendarWeek: boolean
   dayOffset: number
@@ -20,7 +21,13 @@ const props = withDefaults(defineProps<Props>(), {
   locales: undefined
 })
 
+const emit = defineEmits(['update:modelValue'])
+
 const calculationDate = ref(new Date())
+
+function changeSelectedDate (value : Date | undefined) {
+  emit('update:modelValue', value)
+}
 
 function next () {
   calculationDate.value = date.addToDate(calculationDate.value, { days: props.dayJumpOffset })
@@ -47,7 +54,7 @@ const days = computed(() => {
 })
 
 const calendarHeight = computed(() => {
-  let height = 80
+  let height = 84
   if (props.showCalendarWeek) {
     height += 20
   }
@@ -69,6 +76,7 @@ const calendarHeight = computed(() => {
       <q-icon
         name="arrow_back_ios"
         size="md"
+        color="white"
       />
     </div>
     <span
@@ -77,9 +85,11 @@ const calendarHeight = computed(() => {
     >
       <horizontal-calendar-day
         :calendar-date="day"
+        :selected-date="modelValue"
         :show-calendar-week="showCalendarWeek"
         :calendar-week-prefix="calendarWeekPrefix"
         :locales="locales"
+        @selected="o => changeSelectedDate(o)"
       />
     </span>
     <div
@@ -89,14 +99,16 @@ const calendarHeight = computed(() => {
       <q-icon
         name="arrow_forward_ios"
         size="md"
+        color="white"
       />
     </div>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .horizontal-calendar {
   display: inline-block;
+  white-space: nowrap;
   height: 100%;
   position: relative;
   border: 1px solid #dddddd;
@@ -106,10 +118,10 @@ const calendarHeight = computed(() => {
   position: relative;
   display:inline-block;
   vertical-align:top;
-  width: 70px;
+  width: 46px;
   height: 100%;
   cursor: pointer;
-  background-color: #eee;
+  background-color: $primary;
 }
 
 .button .q-icon {
@@ -119,15 +131,15 @@ const calendarHeight = computed(() => {
 }
 
 .button-previous {
-  padding-left: 24px;
+  padding-left: 14px;
 }
 
 .button-next {
-  padding-left: 20px;
+  padding-left: 7px;
   border-left: 1px solid #dddddd;
 }
 
 .button:hover {
-  background-color: rgb(176, 218, 176);
+  background-color: $blue-6
 }
 </style>

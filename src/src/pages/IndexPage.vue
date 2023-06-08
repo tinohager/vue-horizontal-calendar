@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { date } from 'Quasar'
 
 import HorizontalCalendar from 'components/HorizontalCalendar.vue'
 
 const calendarWeekPrefix = ref('KW ')
 const showCalendarWeek = ref(false)
-const dayOffset = ref(10)
+const dayOffset = ref(4)
 const dayJumpOffset = ref(1)
 const locales = ref<string|undefined>(undefined)
+
+const selectedDate = ref<string|undefined>(undefined)
+
+const selectedDate2 = computed(() => {
+  return date.formatDate(selectedDate.value, 'YYYY-MM-DD')
+})
 
 </script>
 
@@ -16,12 +23,14 @@ const locales = ref<string|undefined>(undefined)
     <div class="row q-col-gutter-sm">
       <div class="col-8">
         <horizontal-calendar
+          v-model="selectedDate"
           :calendar-week-prefix="calendarWeekPrefix"
           :show-calendar-week="showCalendarWeek"
           :day-offset="dayOffset"
           :day-jump-offset="dayJumpOffset"
           :locales="locales"
         />
+        <pre class="bg-grey-2">Date:{{ selectedDate2 }}</pre>
       </div>
       <div class="col-4">
         <q-form class="q-gutter-md">
