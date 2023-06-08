@@ -126,7 +126,7 @@ const parsedLocales = computed(() => {
 .day-box {
   display: inline-block;
   vertical-align: top;
-  width: 52px;
+  width: 45px;
   height: 100%;
   border-left: 1px solid #ddd;
   background-color: #fff;

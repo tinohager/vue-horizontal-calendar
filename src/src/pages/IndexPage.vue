@@ -6,7 +6,7 @@ import HorizontalCalendar from 'components/HorizontalCalendar.vue'
 
 const calendarWeekPrefix = ref('KW ')
 const showCalendarWeek = ref(false)
-const dayOffset = ref(4)
+const dayOffset = ref(3)
 const dayJumpOffset = ref(1)
 const locales = ref<string|undefined>(undefined)
 
@@ -21,7 +21,7 @@ const selectedDate2 = computed(() => {
 <template>
   <q-page padding>
     <div class="row q-col-gutter-sm">
-      <div class="col-8">
+      <div class="col-12 col-lg-8">
         <horizontal-calendar
           v-model="selectedDate"
           :calendar-week-prefix="calendarWeekPrefix"
@@ -32,7 +32,7 @@ const selectedDate2 = computed(() => {
         />
         <pre class="bg-grey-2">Date:{{ selectedDate2 }}</pre>
       </div>
-      <div class="col-4">
+      <div class="col-12 col-lg-4">
         <q-form class="q-gutter-md">
           <q-checkbox
             v-model="showCalendarWeek"
