@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { date } from 'Quasar'
+import { date } from 'quasar'
 
 import HorizontalCalendar from 'components/HorizontalCalendar.vue'
 

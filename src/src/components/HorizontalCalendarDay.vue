@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { date } from 'Quasar'
+import { date } from 'quasar'
 
 interface Props {
   calendarDate: Date
