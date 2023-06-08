@@ -10,7 +10,7 @@ const dayOffset = ref(4)
 const dayJumpOffset = ref(1)
 const locales = ref<string|undefined>(undefined)
 
-const selectedDate = ref<string|undefined>(undefined)
+const selectedDate = ref<Date|undefined>(undefined)
 
 const selectedDate2 = computed(() => {
   return date.formatDate(selectedDate.value, 'YYYY-MM-DD')
