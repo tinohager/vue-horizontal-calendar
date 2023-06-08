@@ -2,6 +2,10 @@
 
 ![Horizontal Calendar](/doc/calendar-preview.png)
 
+## Demo
+https://tinohager.github.io/vue-horizontal-calendar/#/
+
+## Configuration
 
 | Props | Type | Description |
 |---|---|---|
