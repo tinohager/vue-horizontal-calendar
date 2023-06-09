@@ -6,6 +6,8 @@ import HorizontalCalendar from 'components/HorizontalCalendar.vue'
 
 const calendarWeekPrefix = ref('KW ')
 const showCalendarWeek = ref(false)
+const showWeekday = ref(true)
+const showYear = ref(true)
 const visibleDays = ref(7)
 const dayWidth = ref(43)
 const dayJumpOffset = ref(1)
@@ -28,6 +30,8 @@ const selectedDate2 = computed(() => {
           :day-width="dayWidth"
           :calendar-week-prefix="calendarWeekPrefix"
           :show-calendar-week="showCalendarWeek"
+          :show-weekday="showWeekday"
+          :show-year="showYear"
           :visible-days="visibleDays"
           :day-jump-offset="dayJumpOffset"
           :locales="locales"
@@ -43,6 +47,16 @@ const selectedDate2 = computed(() => {
             v-model="showCalendarWeek"
             outlined
             label="Show Calendar Week"
+          />
+          <q-checkbox
+            v-model="showWeekday"
+            outlined
+            label="Show Weekday"
+          />
+          <q-checkbox
+            v-model="showYear"
+            outlined
+            label="Show Year"
           />
           <q-input
             v-model="calendarWeekPrefix"

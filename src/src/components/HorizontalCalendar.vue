@@ -9,6 +9,8 @@ interface Props {
   dayWidth: number
   calendarWeekPrefix: string
   showCalendarWeek: boolean
+  showWeekday: boolean
+  showYear: boolean
   visibleDays: number
   dayJumpOffset: number
   locales: string | undefined
@@ -18,6 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
   calendarWeekPrefix: 'KW ',
   dayWidth: 45,
   showCalendarWeek: false,
+  showWeekday: true,
+  showYear: true,
   visibleDays: 7,
   dayJumpOffset: 1,
   locales: undefined
@@ -56,9 +60,15 @@ const days = computed(() => {
 })
 
 const calendarHeight = computed(() => {
-  let height = 84
+  let height = 53
   if (props.showCalendarWeek) {
-    height += 20
+    height += 14
+  }
+  if (props.showWeekday) {
+    height += 15
+  }
+  if (props.showYear) {
+    height += 15
   }
 
   return height
@@ -90,6 +100,8 @@ const calendarHeight = computed(() => {
         :calendar-date="day"
         :selected-date="modelValue"
         :show-calendar-week="showCalendarWeek"
+        :show-weekday="showWeekday"
+        :show-year="showYear"
         :calendar-week-prefix="calendarWeekPrefix"
         :locales="locales"
         @selected="o => changeSelectedDate(o)"

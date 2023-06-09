@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { date } from 'quasar'
 
 interface Props {
@@ -7,6 +7,8 @@ interface Props {
   calendarDate: Date
   selectedDate: Date | undefined
   showCalendarWeek: boolean
+  showWeekday: boolean
+  showYear: boolean
   calendarWeekPrefix: string
   locales: string | undefined
 }
@@ -14,6 +16,9 @@ interface Props {
 const emit = defineEmits(['selected'])
 
 const props = defineProps<Props>()
+
+const mouseOverMonth = ref(false)
+const mouseOverDay = ref(false)
 
 const elementWidth = computed(() => {
   return `${props.width}px`
@@ -74,6 +79,15 @@ const isLastDayInWeek = computed(() => {
   return false
 })
 
+const isBeforeLastDayInWeek = computed(() => {
+  const dayOfWeek = props.calendarDate.getDay()
+  if (dayOfWeek === 6) {
+    return true
+  }
+
+  return false
+})
+
 const isToday = computed(() => {
   if (props.calendarDate.toDateString() === new Date().toDateString()) {
     return true
@@ -102,6 +116,30 @@ const parsedLocales = computed(() => {
   }
 
   return undefined
+})
+
+const monthName = computed(() => {
+  if (mouseOverMonth.value && !props.showYear) {
+    return yearNumber.value
+  }
+
+  return props.calendarDate.toLocaleDateString(parsedLocales.value, { month: 'short' })
+})
+
+const dayNumber = computed(() => {
+  if (mouseOverDay.value && !props.showWeekday) {
+    return weekDay.value
+  }
+
+  return date.formatDate(props.calendarDate, 'DD')
+})
+
+const weekDay = computed(() => {
+  return props.calendarDate.toLocaleDateString(parsedLocales.value, { weekday: 'short' })
+})
+
+const yearNumber = computed(() => {
+  return date.formatDate(props.calendarDate, 'YYYY')
 })
 
 </script>
@@ -135,6 +173,7 @@ const parsedLocales = computed(() => {
             />
 
             <line
+              v-if="isBeforeLastDayInWeek"
               x1="74"
               y1="0"
               x2="80"
@@ -143,6 +182,7 @@ const parsedLocales = computed(() => {
             />
 
             <line
+              v-if="isBeforeLastDayInWeek"
               x1="74"
               y1="8"
               x2="80"
@@ -153,17 +193,31 @@ const parsedLocales = computed(() => {
           </svg>
         </template>
       </div>
-      <div :class="`weekday ${isWeekend ? 'text-red' : ''}`">
-        {{ calendarDate.toLocaleDateString(parsedLocales, { weekday: 'short' }) }}
+      <div
+        v-if="showWeekday"
+        :class="`weekday ${isWeekend ? 'text-red' : ''}`"
+      >
+        {{ weekDay }}
       </div>
-      <div :class="`daynumber ${isToday ? 'daynumber-underline' : ''}`">
-        {{ date.formatDate(calendarDate, 'DD') }}
+      <div
+        :class="`daynumber ${isToday ? 'daynumber-underline' : ''}`"
+        @mouseover="mouseOverDay = true"
+        @mouseout="mouseOverDay = false"
+      >
+        {{ dayNumber }}
       </div>
-      <div :class="`month-name ${isFirstDayInMonth ? 'is-first-day-in-month' : ''}`">
-        {{ calendarDate.toLocaleDateString(parsedLocales, { month: 'short' }) }}
+      <div
+        :class="`monthname ${isFirstDayInMonth ? 'is-first-day-in-month' : ''}`"
+        @mouseover="mouseOverMonth = true"
+        @mouseout="mouseOverMonth = false"
+      >
+        {{ monthName }}
       </div>
-      <div style="font-size:10px; color:#ccc;">
-        {{ date.formatDate(calendarDate, 'YYYY') }}
+      <div
+        v-if="showYear"
+        class="yearnumber"
+      >
+        {{ yearNumber }}
       </div>
     </div>
   </div>
@@ -178,6 +232,7 @@ const parsedLocales = computed(() => {
   border-left: 1px solid #ddd;
   background-color: #fff;
   user-select: none;
+  touch-action: manipulation;
   cursor: pointer;
 }
 
@@ -211,6 +266,7 @@ const parsedLocales = computed(() => {
 }
 
 .day-box .daynumber {
+  padding-top: 2px;
   padding-bottom: 2px;
   font-weight: 700;
   font-size: 15px;
@@ -224,15 +280,21 @@ const parsedLocales = computed(() => {
   border-bottom: 2px solid #3a86dd;
 }
 
-.day-box .month-name {
+.day-box .monthname {
   margin-top: 5px;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 1.2px;
   color: #948f8f;
-  background-color: #948f8f3a;
+
   border-top:1px dotted #39393b;
-  border-bottom:1px dotted #39393b;
+
+}
+
+.day-box .yearnumber {
+  border-top:1px dotted #39393b;
+  font-size: 10px;
+  color: #ccc;
 }
 
 .day-box .is-first-day-in-month {
