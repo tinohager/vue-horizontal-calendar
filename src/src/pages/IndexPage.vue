@@ -6,7 +6,8 @@ import HorizontalCalendar from 'components/HorizontalCalendar.vue'
 
 const calendarWeekPrefix = ref('KW ')
 const showCalendarWeek = ref(false)
-const dayOffset = ref(3)
+const visibleDays = ref(7)
+const dayWidth = ref(43)
 const dayJumpOffset = ref(1)
 const locales = ref<string|undefined>(undefined)
 
@@ -19,18 +20,22 @@ const selectedDate2 = computed(() => {
 </script>
 
 <template>
-  <q-page padding>
+  <q-page class="q-pt-md">
     <div class="row q-col-gutter-sm">
       <div class="col-12 col-lg-8">
         <horizontal-calendar
           v-model="selectedDate"
+          :day-width="dayWidth"
           :calendar-week-prefix="calendarWeekPrefix"
           :show-calendar-week="showCalendarWeek"
-          :day-offset="dayOffset"
+          :visible-days="visibleDays"
           :day-jump-offset="dayJumpOffset"
           :locales="locales"
         />
-        <pre class="bg-grey-2">Date:{{ selectedDate2 }}</pre>
+        <pre
+          class="bg-grey-2 q-pa-md"
+          style="user-select:none;"
+        >Date:{{ selectedDate2 }}</pre>
       </div>
       <div class="col-12 col-lg-4">
         <q-form class="q-gutter-md">
@@ -45,15 +50,21 @@ const selectedDate2 = computed(() => {
             label="Calendar Week Prefix"
           />
           <q-input
-            v-model.number="dayOffset"
+            v-model.number="visibleDays"
             outlined
-            label="Calendar Day Offset"
+            label="Calendar visible Days"
           />
           <q-input
             v-model.number="dayJumpOffset"
             outlined
             label="Calendar Day Jump Offset"
             hint="Click next or previous"
+          />
+          <q-input
+            v-model.number="dayWidth"
+            outlined
+            label="Calendar Day Width"
+            hint="The width of one element"
           />
           <q-input
             v-model="locales"

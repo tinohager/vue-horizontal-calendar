@@ -6,17 +6,19 @@ import HorizontalCalendarDay from './HorizontalCalendarDay.vue'
 
 interface Props {
   modelValue: Date | undefined
+  dayWidth: number
   calendarWeekPrefix: string
   showCalendarWeek: boolean
-  dayOffset: number
+  visibleDays: number
   dayJumpOffset: number
   locales: string | undefined
 }
 
 const props = withDefaults(defineProps<Props>(), {
   calendarWeekPrefix: 'KW ',
+  dayWidth: 45,
   showCalendarWeek: false,
-  dayOffset: 7,
+  visibleDays: 7,
   dayJumpOffset: 1,
   locales: undefined
 })
@@ -38,8 +40,8 @@ function previous () {
 }
 
 const days = computed(() => {
-  const startDate = date.subtractFromDate(calculationDate.value, { days: props.dayOffset })
-  const endDate = date.addToDate(calculationDate.value, { days: props.dayOffset })
+  const startDate = calculationDate.value
+  const endDate = date.addToDate(calculationDate.value, { days: props.visibleDays })
 
   const unit = 'days'
   const diff = date.getDateDiff(endDate, startDate, unit)
@@ -84,6 +86,7 @@ const calendarHeight = computed(() => {
       :key="`${date.formatDate(day, 'YYYY-MM-DD')}`"
     >
       <horizontal-calendar-day
+        :width="dayWidth"
         :calendar-date="day"
         :selected-date="modelValue"
         :show-calendar-week="showCalendarWeek"
@@ -118,7 +121,7 @@ const calendarHeight = computed(() => {
   position: relative;
   display:inline-block;
   vertical-align:top;
-  width: 46px;
+  width: 42px;
   height: 100%;
   cursor: pointer;
   touch-action: manipulation;

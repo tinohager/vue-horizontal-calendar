@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { date } from 'quasar'
 
 interface Props {
+  width: number
   calendarDate: Date
   selectedDate: Date | undefined
   showCalendarWeek: boolean
@@ -14,12 +15,28 @@ const emit = defineEmits(['selected'])
 
 const props = defineProps<Props>()
 
+const elementWidth = computed(() => {
+  return `${props.width}px`
+})
+
 const selected = computed(() => {
   if (props.selectedDate?.toDateString() === props.calendarDate.toDateString()) {
     return true
   }
 
   return false
+})
+
+const additionalClass = computed(() => {
+  if (selected.value) {
+    return 'selected'
+  }
+
+  if (isWeekend.value) {
+    return 'bg-red-1'
+  }
+
+  return ''
 })
 
 function selectDay () {
@@ -91,7 +108,7 @@ const parsedLocales = computed(() => {
 
 <template>
   <div
-    :class="`day-box ${selected ? 'selected' : ''}`"
+    :class="`day-box ${additionalClass}`"
     @click="selectDay"
   >
     <div class="day-box-frame">
@@ -103,7 +120,37 @@ const parsedLocales = computed(() => {
           {{ calendarWeekPrefix }}{{ date.formatDate(calendarDate, 'ww') }}
         </template>
         <template v-else>
-          -
+          <svg
+            width="100%"
+            height="8"
+            viewBox="0 0 80 8"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line
+              x1="0"
+              y1="4"
+              x2="80"
+              y2="4"
+              stroke="grey"
+            />
+
+            <line
+              x1="74"
+              y1="0"
+              x2="80"
+              y2="4"
+              stroke="grey"
+            />
+
+            <line
+              x1="74"
+              y1="8"
+              x2="80"
+              y2="4"
+              stroke="grey"
+            />
+
+          </svg>
         </template>
       </div>
       <div :class="`weekday ${isWeekend ? 'text-red' : ''}`">
@@ -126,7 +173,7 @@ const parsedLocales = computed(() => {
 .day-box {
   display: inline-block;
   vertical-align: top;
-  width: 45px;
+  width: v-bind(elementWidth);
   height: 100%;
   border-left: 1px solid #ddd;
   background-color: #fff;
@@ -190,10 +237,10 @@ const parsedLocales = computed(() => {
 
 .day-box .is-first-day-in-month {
   color: #ffffff;
-  background-color: #3a86dd;
-  border-left:3px solid #474747;
-  border-top:1px solid #474747;
-  border-bottom:1px solid #474747;
+  background-color: #47474750;
+  border-left:3px solid #474747c4;
+  border-top:1px dotted #474747;
+  border-bottom:1px dotted #474747;
   font-weight: bold;
 }
 
