@@ -108,6 +108,7 @@ const calendarHeight = computed(() => {
 <style scoped lang="scss">
 .horizontal-calendar {
   display: inline-block;
+  touch-action: manipulation;
   white-space: nowrap;
   height: 100%;
   position: relative;
