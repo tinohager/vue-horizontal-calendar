@@ -302,7 +302,6 @@ const yearNumber = computed(() => {
   background-color: #47474750;
   border-left:3px solid #474747c4;
   border-top:1px dotted #474747;
-  border-bottom:1px dotted #474747;
   font-weight: bold;
 }
 
