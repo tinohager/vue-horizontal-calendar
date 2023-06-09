@@ -1,8 +1,8 @@
 {
-  "name": "quasar-project",
+  "name": "vue-horizontal-calendar",
   "version": "0.0.1",
-  "description": "A Quasar Project",
-  "productName": "Quasar App",
+  "description": "A horizontal calendar",
+  "productName": "vue-horizontal-calendar",
   "author": "Tino Hager <tino.hager@nager.at>",
   "private": true,
   "scripts": {

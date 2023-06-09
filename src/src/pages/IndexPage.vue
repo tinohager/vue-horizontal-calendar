@@ -66,7 +66,7 @@ const selectedDate2 = computed(() => {
           <q-input
             v-model.number="visibleDays"
             outlined
-            label="Calendar visible Days"
+            label="Visible Calendar Days"
           />
           <q-input
             v-model.number="dayJumpOffset"
