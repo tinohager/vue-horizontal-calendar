@@ -4,7 +4,7 @@ import { date } from 'quasar'
 
 import HorizontalCalendar from 'components/HorizontalCalendar.vue'
 
-const calendarWeekPrefix = ref('KW ')
+const calendarWeekPrefix = ref('CW ')
 const showCalendarWeek = ref(false)
 const showWeekday = ref(true)
 const showYear = ref(true)

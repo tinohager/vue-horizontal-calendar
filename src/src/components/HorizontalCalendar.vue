@@ -17,7 +17,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  calendarWeekPrefix: 'KW ',
+  calendarWeekPrefix: 'CW ',
   dayWidth: 45,
   showCalendarWeek: false,
   showWeekday: true,
@@ -30,9 +30,26 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits(['update:modelValue'])
 
 const calculationDate = ref(new Date())
+const intervalId = ref()
 
 function changeSelectedDate (value : Date | undefined) {
   emit('update:modelValue', value)
+}
+
+function startPreviousMove () {
+  previous()
+  intervalId.value = setInterval(previous, 150)
+}
+function stopPreviousMove () {
+  clearInterval(intervalId.value)
+}
+
+function startNextMove () {
+  next()
+  intervalId.value = setInterval(next, 150)
+}
+function stopNextMove () {
+  clearInterval(intervalId.value)
 }
 
 function next () {
@@ -71,51 +88,69 @@ const calendarHeight = computed(() => {
     height += 15
   }
 
-  return height
+  return `${height}px`
 })
 
 </script>
 
 <template>
-  <div
-    class="horizontal-calendar"
-    :style="`height:${calendarHeight}px`"
-  >
+  <div class="horizontal-calendar">
     <div
-      class="button button-previous"
-      @click="previous"
+      class="button"
+      @mousedown="startPreviousMove"
+      @mouseup="stopPreviousMove"
     >
-      <q-icon
-        name="arrow_back_ios"
-        size="md"
-        color="white"
-      />
+      <div class="button-previous">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          transform="rotate(180)"
+          width="16"
+          height="40"
+          viewBox="0 -960 456 800"
+        >
+          <path
+            fill="#fff"
+            d="M56-160 0-217l343-343L0-903l56-57 400 400z"
+          />
+        </svg>
+      </div>
     </div>
-    <span
-      v-for="day in days"
-      :key="`${date.formatDate(day, 'YYYY-MM-DD')}`"
-    >
-      <horizontal-calendar-day
-        :width="dayWidth"
-        :calendar-date="day"
-        :selected-date="modelValue"
-        :show-calendar-week="showCalendarWeek"
-        :show-weekday="showWeekday"
-        :show-year="showYear"
-        :calendar-week-prefix="calendarWeekPrefix"
-        :locales="locales"
-        @selected="o => changeSelectedDate(o)"
-      />
-    </span>
+    <div class="day-container">
+      <span
+        v-for="day in days"
+        :key="`${date.formatDate(day, 'YYYY-MM-DD')}`"
+      >
+        <horizontal-calendar-day
+          :width="dayWidth"
+          :calendar-date="day"
+          :selected-date="modelValue"
+          :show-calendar-week="showCalendarWeek"
+          :show-weekday="showWeekday"
+          :show-year="showYear"
+          :calendar-week-prefix="calendarWeekPrefix"
+          :locales="locales"
+          @selected="o => changeSelectedDate(o)"
+        />
+      </span>
+    </div>
     <div
-      class="button button-next"
-      @click="next"
+      class="button"
+      @mousedown="startNextMove"
+      @mouseup="stopNextMove"
     >
-      <q-icon
-        name="arrow_forward_ios"
-        size="md"
-        color="white"
-      />
+      <div class="button-next">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="40"
+          viewBox="0 -960 456 800"
+        >
+          <path
+            fill="#fff"
+            d="M56-160 0-217l343-343L0-903l56-57 400 400z"
+          />
+        </svg>
+      </div>
     </div>
   </div>
 </template>
@@ -124,15 +159,21 @@ const calendarHeight = computed(() => {
 .horizontal-calendar {
   display: inline-block;
   white-space: nowrap;
-  height: 100%;
+  height: v-bind(calendarHeight);
   position: relative;
   border: 1px solid #dddddd;
 }
 
-.button {
+.horizontal-calendar .day-container {
+  height: 100%;
+  display: inline-block;
+  border-right: 1px solid #dddddd;
+}
+
+.horizontal-calendar .button {
   position: relative;
-  display:inline-block;
-  vertical-align:top;
+  display: inline-block;
+  vertical-align: top;
   width: 42px;
   height: 100%;
   cursor: pointer;
@@ -140,22 +181,15 @@ const calendarHeight = computed(() => {
   background-color: $primary;
 }
 
-.button .q-icon {
+.horizontal-calendar .button div {
+  width: 100%;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  text-align: center;
 }
 
-.button-previous {
-  padding-left: 14px;
-}
-
-.button-next {
-  padding-left: 7px;
-  border-left: 1px solid #dddddd;
-}
-
-.button:hover {
+.horizontal-calendar .button:hover {
   background-color: $blue-6
 }
 </style>
