@@ -1,5 +1,10 @@
 # vue-horizontal-calendar
 
+This is a space-saving calendar control that offers the possibility to display the day of the week as well as the week number.
+It consists of 2 files and has only the dependency to the quasar framework. `HorizontalCalendar.vue` and `HorizontalCalendarDay.vue`
+
+If you like it we would appreciate a star for the project. 🌟
+
 ![Horizontal Calendar](/doc/calendar-preview.png)
 
 ## Demo
