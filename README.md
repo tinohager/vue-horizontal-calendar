@@ -8,6 +8,8 @@ If you like it we would appreciate a star for the project. 🌟
 ![Horizontal Calendar](/doc/calendar-preview.png)
 
 ## Demo
+
+Here you can simply try it out and also make settings in the configuration.
 https://tinohager.github.io/vue-horizontal-calendar/
 
 ## Configuration
