@@ -9,7 +9,7 @@ If you like it we would appreciate a star for the project. 🌟
 
 ## Demo
 
-Here you can simply try it out and also make settings in the configuration.
+Here you can simply try it out and also make settings in the configuration.<br>
 https://tinohager.github.io/vue-horizontal-calendar/
 
 ## Configuration
