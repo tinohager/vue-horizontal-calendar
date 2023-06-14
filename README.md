@@ -5,7 +5,9 @@ It consists of 2 files and has only the dependency to the quasar framework. `Hor
 
 If you like it we would appreciate a star for the project. 🌟
 
-![Horizontal Calendar](/doc/calendar-preview.png)
+![Horizontal Calendar](/doc/calendar-preview1.png)
+![Horizontal Calendar](/doc/calendar-preview2.png)
+![Horizontal Calendar](/doc/calendar-preview3.png)
 
 ## Demo
 
